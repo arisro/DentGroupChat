@@ -1,0 +1,17 @@
+production: &production
+  adapter: mysql2
+  host: localhost
+  database: drs
+  username: user
+  password: 'pass'
+  encoding: 'utf8'
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *production
+  database: drs_dev
+
+test:
+  <<: *production
+  database: drs_test
