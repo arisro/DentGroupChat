@@ -37,7 +37,7 @@ class ChatController < WebsocketRails::BaseController
 		hash = Digest::MD5.hexdigest("#{user.id}saltlol")
 
 		if hash == message[:key]
-			connection_store[:user] = { user_id: user.id, user_name: user.full_name, key: hash }
+			connection_store[:user] = { user_id: user.id, user_name: user.full_name, profile_picture: user.get_profile_picture, specialization: user.specialization, key: hash }
 			WebsocketRails["u#{user.id}".to_s].make_private
 			broadcast_user_list
 		end
