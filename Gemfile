@@ -6,5 +6,8 @@ gem 'mysql2'
 gem 'thin'
 gem 'websocket-rails'
 
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
+group :development do
+  gem 'capistrano'
+  gem 'rvm-capistrano'
+  gem 'capistrano-unicorn', :require => false
+end
