@@ -7,7 +7,6 @@ gem 'thin'
 gem 'websocket-rails'
 
 group :development do
-  gem 'capistrano'
-  gem 'rvm-capistrano'
-  gem 'capistrano-unicorn', :require => false
+  gem 'capistrano', '~> 3.2.0', git: 'git@github.com:capistrano/capistrano.git'
+  gem 'capistrano-rvm'
 end
