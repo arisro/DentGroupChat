@@ -1,7 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
-set :application, 'DRS Chat'
+set :application, 'DRSChat'
 set :repo_url, 'git@github.com:arisro/DentGroupChat.git'
 
 # Default branch is :master
