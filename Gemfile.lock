@@ -59,6 +59,9 @@ GEM
     hike (1.2.3)
     hiredis (0.4.5)
     i18n (0.6.9)
+    jquery-rails (3.1.0)
+      railties (>= 3.0, < 5.0)
+      thor (>= 0.14, < 2.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -134,6 +137,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rails
   capistrano-rvm
+  jquery-rails
   mysql2
   rails (= 4.0.2)
   thin
