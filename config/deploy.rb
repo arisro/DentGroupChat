@@ -43,5 +43,6 @@ namespace :deploy do
   before :deploy, "deploy:check_revision"
   after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :finishing, 'deploy:cleanup'
+  after :finishing, 'rake:invoke task="chat:reset_users"'
   after :finishing, 'deploy:restart'
 end

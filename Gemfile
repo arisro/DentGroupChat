@@ -6,6 +6,8 @@ gem 'mysql2'
 gem 'thin'
 gem 'websocket-rails'
 
+gem 'redis-rails'
+
 gem 'jquery-rails'
 
 gem 'coffee-rails', '~> 4.0.0'

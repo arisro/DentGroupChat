@@ -22,24 +22,26 @@ class ChatController < WebsocketRails::BaseController
 	end
 
 	def client_connected
-		system_msg :new_message, "client #{client_id} connected"
+		# system_msg :new_message, "client #{client_id} connected"
 	end
 
 	def client_disconnected
+		user = User.find(connection_store[:user][:user_id])
+		user.update(is_online: false)
 		connection_store[:user] = nil
-		system_msg "client #{client_id} disconnected"
-		broadcast_user_list
+		# system_msg "client #{client_id} disconnected"
+		# broadcast_user_list
 	end
 
 
 	def new_user
 		user = User.find(message[:user_id])
 		hash = Digest::MD5.hexdigest("#{user.id}saltlol")
-
 		if hash == message[:key]
+			user.update(is_online: true)
 			connection_store[:user] = { user_id: user.id, user_name: user.full_name, profile_picture: user.get_profile_picture, specialization: user.specialization, key: hash }
 			WebsocketRails["u#{user.id}".to_s].make_private
-			broadcast_user_list
+			# broadcast_user_list
 		end
 	end
 
@@ -49,11 +51,21 @@ class ChatController < WebsocketRails::BaseController
 	end
 
 	def new_message
-		unless connection_store[:user].nil? 
-			WebsocketRails["u#{message[:to_user_id]}"].trigger 'chat_new_message', {
-				from: connection_store[:user],
-				message: message[:msg_body]
-			}
+		unless connection_store[:user].nil?
+			# check if user is ignored
+			# ChatIgnore.uncached do
+				are_ignored = Rails.cache.fetch("chat/are_ignored/#{message[:to_user_id]}/#{connection_store[:user][:user_id]}", expires_in: 12.hours) do
+					ChatIgnore.uncached do
+						ChatIgnore.where('(by_user_id = ? and on_user_id = ?) or (by_user_id = ? and on_user_id = ?)', message[:to_user_id], connection_store[:user][:user_id], connection_store[:user][:user_id], message[:to_user_id]).count
+					end
+				end
+				if are_ignored == 0
+					WebsocketRails["u#{message[:to_user_id]}"].trigger 'chat_new_message', {
+						from: connection_store[:user],
+						message: message[:msg_body]
+					}
+				end
+			# end
 		end
 	end
 
