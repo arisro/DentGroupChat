@@ -1,5 +1,5 @@
 set :stage, :production
-set :branch, ENV["REVISION"] || "master"
+set :branch, ENV["REVISION"] || ENV["BRANCH_NAME"] || "master"
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
 server 'chat.dentgroup.eu', user: 'aris', roles: %w{web app db}, primary: true
