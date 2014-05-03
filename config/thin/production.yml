@@ -2,7 +2,7 @@ port: 5000
 environment: production
 max_conns: 1024
 max_persistent_conns: 512
-servers: 2
+servers: 1
 threaded: true
 no-epoll: true
 daemonize: true
