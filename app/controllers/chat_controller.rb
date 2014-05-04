@@ -53,19 +53,19 @@ class ChatController < WebsocketRails::BaseController
 	def new_message
 		unless connection_store[:user].nil?
 			# check if user is ignored
-			# ChatIgnore.uncached do
-				are_ignored = Rails.cache.fetch("chat/are_ignored/#{message[:to_user_id]}/#{connection_store[:user][:user_id]}", expires_in: 12.hours) do
-					ChatIgnore.uncached do
-						ChatIgnore.where('(by_user_id = ? and on_user_id = ?) or (by_user_id = ? and on_user_id = ?)', message[:to_user_id], connection_store[:user][:user_id], connection_store[:user][:user_id], message[:to_user_id]).count
-					end
+			# this is invalidated on the website
+			are_ignored = Rails.cache.fetch("chat/are_ignored/#{message[:to_user_id]}/#{connection_store[:user][:user_id]}", expires_in: 12.hours) do
+				ChatIgnore.uncached do
+					ChatIgnore.where('(by_user_id = ? and on_user_id = ?) or (by_user_id = ? and on_user_id = ?)', message[:to_user_id], connection_store[:user][:user_id], connection_store[:user][:user_id], message[:to_user_id]).count
 				end
-				if are_ignored == 0
-					WebsocketRails["u#{message[:to_user_id]}"].trigger 'chat_new_message', {
-						from: connection_store[:user],
-						message: message[:msg_body]
-					}
-				end
-			# end
+			end
+			if are_ignored == 0
+				ChatMessage.create(from_user_id: connection_store[:user][:user_id], to_user_id: message[:to_user_id], body: message[:msg_body])
+				WebsocketRails["u#{message[:to_user_id]}"].trigger 'chat_new_message', {
+					from: connection_store[:user],
+					message: message[:msg_body]
+				}
+			end
 		end
 	end
 
