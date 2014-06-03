@@ -1,14 +1,15 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
-set :application, 'DRSChat'
+set :application, 'DentGroupChat'
 set :repo_url, 'git@github.com:arisro/DentGroupChat.git'
+set :branch, 'master'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/com.dent-group.chat'
+set :deploy_to, '/var/www/eu.dentgroup.chat'
 
 set :ssh_options, {
   forward_agent: true,

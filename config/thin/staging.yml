@@ -1,0 +1,8 @@
+port: 6000
+environment: staging
+max_conns: 256
+max_persistent_conns: 64
+servers: 1
+threaded: false
+daemonize: true
+tag: drs-chat-service-app-staging
