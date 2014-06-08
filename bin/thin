@@ -1,2 +1,2 @@
 #!/bin/sh
-RAILS_ENV=development bundle exec thin start -p 5000
+RAILS_ENV=development bundle exec thin start -p 6000 -d
