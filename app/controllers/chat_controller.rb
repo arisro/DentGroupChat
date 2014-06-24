@@ -36,7 +36,7 @@ class ChatController < WebsocketRails::BaseController
 
 	def new_user
 		user = User.find(message[:user_id])
-		hash = Digest::MD5.hexdigest("#{user.id}saltlol")
+		hash = Digest::MD5.hexdigest("#{user.id}saltgoeshere")
 		if hash == message[:key]
 			user.update(is_online: true)
 			connection_store[:user] = { user_id: user.id, user_name: user.full_name, profile_picture: user.get_profile_picture, specialization: user.specialization, key: hash }
